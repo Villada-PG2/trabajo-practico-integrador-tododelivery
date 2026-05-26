@@ -55,25 +55,15 @@ de los mismos y registrar la finalización de la elaboración.
 Se acordó con los responsables del negocio que el sistema deberá tener pantallas
 similares a las de Windows.
 
-## Reglas de negocio:
-* **Exclusividad de canal:** Solo se admiten pedidos telefónicos por parte de los clientes; no se realizan ventas en mostrador bajo ninguna circunstancia.
-* **Zona de cobertura:** El reparto de los pedidos se limita estrictamente a los barrios de la zona sur de la ciudad.
-* **Horario de corte:** Los pedidos telefónicos se aceptan y registran hasta un máximo de 30 minutos antes del horario de cierre del negocio.
-* **Restricción de despacho por repartidor:** Cada repartidor puede realizar como máximo 3 entregas simultáneas por viaje, y el monto de dicho conjunto de entregas no debe superar los $20000.
-* **Impresión fiscal obligatoria:** El sistema debe emitir y procesar los tickets requeridos para el cobro utilizando obligatoriamente una impresora fiscal.
-* **Tiempo límite de facturación:** El proceso de impresión de los tickets fiscales en el nuevo sistema nunca debe ser superior a los 5 segundos.
-* **Interfaz de usuario:** El diseño de las pantallas del sistema de información debe ser similar al entorno visual de Windows.
-
 ## Objetivo:
-Gestionar los procesos de consulta de productos y precios, toma de pedidos telefónicos, visualización y control de elaboración en cocina, armado, asignación de repartos, rendición de dinero de los repartidores y generación de estadísticas de facturación semanal para el negocio Todo Delivery.
+Gestionar los procesos de consulta, toma, control y entrega de pedidos.
 
 ## Entradas:
-* Datos del cliente (nombre, apellido, teléfono, domicilio completo).
-* Detalles del pedido (productos seleccionados, cantidades asociadas, monto con el que abona).
-* Actualizaciones periódicas de precios de los productos.
-* Registro de finalización de elaboración de productos (desde la pantalla táctil de cocina).
+* Datos del cliente.
+* Detalles del pedido.
+* Registro de finalización de elaboración de productos.
 * Asignación de repartidores a los pedidos correspondientes.
-* Dinero rendido por el repartidor y datos de control de caja (registro de diferencias).
+* Dinero rendido por el repartidor y datos de control de caja.
 * Definición de mercadería y bebidas necesarias informadas por el responsable de compras.
 
 ## Salidas:
@@ -81,14 +71,14 @@ Gestionar los procesos de consulta de productos y precios, toma de pedidos telef
 * Importe total calculado del pedido y monto estimado del cambio/vuelto.
 * Visualización ordenada del listado y detalle de pedidos en las pantallas táctiles de la cocina.
 * Ticket fiscal impreso a través de la impresora fiscal.
-* Listado semanal de productos vendidos (cantidades acumuladas e importe de participación en la facturación total).
+* Listado semanal de productos vendidos.
 * Registro de novedades de diferencias de caja detectadas en la rendición diaria.
 
 ## Frontera:
 * La preparación física y cocción de los alimentos en la cocina.
 * El traslado físico de los pedidos por parte de los repartidores hacia los domicilios de los clientes.
-* La adquisición real y negociación de mercadería y bebidas con los proveedores (el sistema solo contempla la definición de necesidades por el responsable de compras).
-* El análisis e investigación profunda de las diferencias de dinero al final del día (el sistema solo se limita a registrar la situación de discrepancia detectada en la rendición).
+* La adquisición real y negociación de mercadería y bebidas con los proveedores.
+* El análisis e investigación profunda de las diferencias de dinero al final del día.
 
 ## Entorno:
 * Clientes
@@ -106,9 +96,9 @@ Gestionar los procesos de consulta de productos y precios, toma de pedidos telef
 * **1.2** Debe permitir registrar y actualizar de forma periódica los precios asignados a cada uno de los productos del negocio.
 
 ### 2. Gestión y Registro de Pedidos
-* **2.1** El sistema debe permitir registrar los datos completos de un pedido telefónico: número de pedido, fecha y hora de solicitud, nombre y apellido del cliente, número de teléfono, domicilio de entrega completo, productos solicitados y la cantidad asociada a cada uno.
+* **2.1** El sistema debe permitir registrar los datos completos de un pedido telefónico.
 * **2.2** Debe calcular automáticamente el importe de cada producto y el importe total del pedido en función de las cantidades y los precios vigentes.
-* **2.3** El sistema debe registrar el monto con el que abonará el cliente y calcular el dinero en cambio (vuelto) que se le debe entregar al repartidor.
+* **2.3** El sistema debe registrar el monto con el que abonará el cliente y calcular vuelto que se le debe entregar al repartidor.
 * **2.4** Debe permitir el ingreso y registro de la demora estimada informada al cliente al momento de consolidar la comunicación.
 
 ### 3. Control y Monitoreo de Elaboración en Cocina
@@ -124,13 +114,13 @@ Gestionar los procesos de consulta de productos y precios, toma de pedidos telef
 ### 5. Rendición de Cuentas y Cierre de Pedidos
 * **5.1** El sistema debe permitir registrar la recepción del dinero cobrado por el repartidor al regresar al negocio.
 * **5.2** Debe permitir el registro de las situaciones en las que se detecten diferencias o discrepancias entre el dinero recibido y el ticket emitido, guardando la información para su posterior análisis al finalizar el día.
-* **5.3** El sistema debe actualizar el estado del pedido, marcándolo formalmente como "entregado al cliente" una vez procesada la rendición de dinero (exista o no diferencia).
+* **5.3** El sistema debe actualizar el estado del pedido, marcándolo formalmente como "entregado al cliente" una vez procesada la rendición de dinero.
 
-### 6. Reportes y Publicidad
-* **6.1** El sistema debe generar de forma semanal el listado de productos vendidos, detallando la cantidad total de cada producto comercializado en la semana y el importe exacto que representa dentro de la facturación total, con el fin de asistir en la definición de estrategias de venta y publicidad.
+### 6. Reportes Semanales
+* **6.1** El sistema debe generar de forma semanal el listado de productos vendidos, detallando la cantidad total de cada producto comercializado en la semana y el importe exacto que representa dentro de la facturación total.
 
 ## R.N.F.:
 * **Hardware de Cocina:** El sistema debe operar en pantallas táctiles ubicadas en el área de la cocina para la visualización y actualización de pedidos.
 * **Hardware de Salida:** Interfaz e integración obligatoria con una impresora fiscal para la emisión de los tickets de cobro.
 * **Eficiencia de Tiempo:** La generación e impresión del ticket fiscal debe completarse en un tiempo estricto nunca superior a los 5 segundos.
-* **Interfaz de Usuario (Look & Feel):** El sistema debe contar con interfaces gráficas y pantallas con un diseño similar al entorno de Windows.
+* **Interfaz de Usuario:** El sistema debe contar con interfaces gráficas y pantallas con un diseño similar al entorno de Windows.
