@@ -1,0 +1,179 @@
+%%Una empresa que se dedica a la organización de eventos, en el contexto de la pandemia, se
+%%ha propuesto brindar servicios de eventos vía streaming de diferentes tipos, en 8 países de
+%%la región. El sistema de información solicitado deberá poder registrar un evento vía web
+%%teniendo en cuenta los siguientes prototipos:
+
+%%Los datos del productor que se requieren son sólo el nombre completo, teléfono y
+%%email. Los países de destino son los países de Sudamérica con idioma castellano, por ej.
+%%Argentina, Chile, Perú, etc. El tipo de evento puede ser Público, Privado o Mixto. Un evento
+%%deberá tener un nombre, se emitirá para sólo un país, y puede tener asociadas varias
+%%categorías de evento. La descripción de Artistas participantes es opcional.
+%%El productor deberá poder seleccionar la plataforma de streaming que emitirá el
+%%evento: Vimeo, Twitch o Youtube. También deberá completar el link con el que realizará el
+%%streaming y asignar una imagen del evento para promocionarlo. Puede haber más de un
+%%tipo de entrada asociado a un evento. El precio del eTicket será en la moneda del país
+
+%%seleccionado. Además, se establecerá un cargo por servicios que puede ser del 10 o 15%.
+%%El productor deberá ingresar además cuántos etickets espera vender para el evento. Si es
+%%más de 500 etickets, el Service charge será de 10%, sino 15%: Precio total= precio + cargo
+%%por servicio.
+
+%%Registrado el evento, llegará un email al productor con todos los datos del evento,
+%%incluyendo el código del evento. Además, se informará la contraseña de acceso al nuevo
+%%productor (podrá acceder nuevamente con el email y la contraseña). El productor debe
+%%ingresar nuevamente y confirmar el evento. El evento quedará disponible 2 horas después
+%%de la confirmación y cerrado para la venta 3 horas antes del evento.
+%%El Gerente de operaciones deberá poder generar un reporte semanal con los
+%%productores que han registrado eventos, por cantidad de eventos, país y plataforma de
+%%streaming.
+
+classDiagram
+    class Evento {
+        - Str nombre
+        - Str descripcion
+        - Str artistasPartisipantes
+        - Str descripcionDeArtistas
+        - DateTime fechaHoraInicioEstimada
+        - DateTime fechaHoraFinEstimada
+        - Str linkStreaming
+        - Str imagen
+        - Str codigoDeEvento
+        - dateTime fechaHoraCreacion
+        - int cantidadDeVentasEsperadas
+
+        - TipoEvento tipoEventoSeleccionado
+        - Pais paisSeleccionado
+        - Plataforma plataformmaStreaming
+        - CambioEstado listaCambiosEstado
+        - Categoria[list] listaCategoriasSeleccionadas
+        - TipoEntrada[list] listaTiposEntradaSeleccionados
+        %%creacion de evento
+        -calcularCargo()
+        +calcularServiceCHarge()
+        +setEstadoCreado()
+        -crearCambioEstado()
+        -generarCodigoEvento()
+        -guardarFechaCreacion()
+        -validarLink()
+        -agregarEntrada()
+        %% pendiente de confirmacion
+        + pendienteDeConfirmacion()
+        %% confirmado
+        + confrimarEvento()
+        %% disponible
+        + pasaron2HorasDeLaConfirmacion()
+        + setDisponibleEvento()
+        + habilitarVentas()
+        %% cerrado
+        + faltan3HorasParaElEvento()
+        + cerrarEvento()
+        + deshabilitarVentas()
+        %% senEnEmision()
+        + setEnEmision()
+
+        %% finalizarEvento
+        + setFinalizarEvento()
+
+        + suspenderEvento()
+
+        + filtrarPorFecha()
+        + filtrarPorPais()
+        + filtrarPorPlataforma()
+
+        +calcularGananciaEsperada()
+    }
+
+    class TipoEvento{
+        - Str nombre
+        - Str descripcion
+    }
+    
+    class Productor {
+        - Str nombre
+        - Str telefono
+        - Email email
+        - Password contrasenia
+        - Evento[list] listaDeEventos
+
+        - crearEvento()
+        - generarContrasenia()
+        - generarEmail()
+        %% confirmar evento
+        - confirmarEvento()
+        + validarUsuarioYContrasenia()
+        %% emitir evento
+        + setEmisionEvento()
+        %% finalizar evento
+        + finalizarEvento()
+
+        + suspenderEvento()
+
+        + obtenerEventosPorFecha()
+        + contarMisEventos()
+        + contarEventosPorPais()
+        + contarEventosPorPlataforma()
+
+    }
+
+    class Categoria {
+        - str nombre
+        - str descripcion
+    }
+    
+    class Pais {
+        - str nombre
+        - str moneda
+
+        +esDelPais()
+    }
+
+    class Plataforma {
+        - str nombre
+        - str descripcion
+
+        +esDePlataforma()
+    }
+    class CambioEstado { 
+        - EstadoEvento estado
+        - DateTime FechaHoraInicio
+        - DateTime FechaHoraFin
+
+        +setCreado()
+        +setPendienteDeConfirmacion()
+        +setConfirmado()
+        +pasaron2HorasDeLaConfirmacion()
+        +setDisponible()
+        +setCerrado()
+        +serEnEmision()
+        +serFinalizado()
+    }
+    class EstadoEvento {
+        - str nombre
+        - str descripcion
+        
+        +esCreado()
+        +esPendienteDeConfirmacion()
+        +esConfirmado()
+        +esDisponible()
+        +esCerrado()
+        +esEnEmision()
+        +esFinalizado()
+        +esSuspendido()
+        +esCancelado()
+    }
+    class TipoEntrada {
+        - str nombre
+        - str descripcion
+        - float precioUnitario
+
+        +calcularSubtotal()
+    }
+        Productor -->"0..*" Evento
+    
+    Evento -->"1" Pais
+    Evento -->"1..*" Categoria
+    Evento -->"1" TipoEvento
+    Evento -->"1..*" CambioEstado
+    CambioEstado -->"1" EstadoEvento
+    Evento -->"1" Plataforma
+    Evento -->"0..*" TipoEntrada

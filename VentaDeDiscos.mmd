@@ -1,0 +1,57 @@
+%%Realizar el diagrama de clases del dominio:
+%%Una casa de venta de discos posee un sistema de información con el cual procesa las ventas de dichos discos. La firma
+%%trabaja con distintos sellos discográficos y con variados géneros musicales. Las ventas las realizan únicamente de contado.
+%%De cada sello discográfico se conoce el nombre, el domicilio, el teléfono, el e-mail, y cada género musical está identificado
+%%por un nombre y una descripción.
+%%Por cada venta de discos que se realiza, se registra la fecha de la venta, nombre del cliente, la cantidad comprada de
+%%dicho disco, el precio unitario del mismo, el importe total de la venta y un descuento en el caso que hubiere, generando una
+%%factura que se entrega al cliente.
+%%De cada disco se tiene identificado el nombre del álbum, cantidad existente, el precio unitario y el año de edición. Cada
+%%disco corresponde a un sello discográfico y a un género musical; ahora, cada sello discográfico comprende muchos discos, y
+%%hay muchos discos de un mismo género musical. Cada disco puede tener uno o más intérpretes y por cada intérprete puede
+%%corresponder uno o más discos. De cada intérprete se conoce su nombre, apellido, nacionalidad.
+%%Además de utilizar el sistema de información para este procesamiento de datos, también se lo utiliza para emitir los
+%%siguientes listados: Listado de discos vendidos en el mes y listado alfabético de intérpretes.
+
+classDiagram
+    class SelloDiscografico {
+        - string nombre
+        - string domicilio
+        - string telefono
+        - string email
+    }
+    class GeneroMusical {
+        - string nombre
+        - string descripcion
+    }
+    class Disco {
+        - string album
+        - int cantExistente
+        - float precioUnitario
+        - date anioEdicion
+    }
+    class Interprete {
+        - string nombre
+        - string apellido
+        - string nacionalidad
+    }
+    class Venta {
+        - date fecha
+        - string nombreCliente
+        - float importeTotal
+        - float descuento
+        - generarFactura()
+        - generarListadoDiscosVendidos()
+        - generarListadoAlfabetico()
+
+    }
+    class detalleVenta {
+        - int cantidadComprada
+        - float precioUnitario    
+    }
+
+    SelloDiscografico "1" <-- "0..*" Disco
+    GeneroMusical "1" <-- "0..*" Disco
+    Disco "1.." <-- "1.." Interprete
+    Venta "1" --> "1..*" Disco
+    detalleVenta o-- Venta

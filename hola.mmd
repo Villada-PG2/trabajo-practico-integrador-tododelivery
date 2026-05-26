@@ -1,0 +1,14 @@
+classDiagram
+    Cuenta -- Usuario
+    class cbu["Cuenta Bancaria Unica"]
+    cbu: - string
+    class cuenta
+    class Usuario
+    class venta{
+        - string precioTexto
+        + int precio0
+    }
+    cuenta --> venta
+    class producto
+    producto --> venta
+    venta --> producto

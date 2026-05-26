@@ -1,0 +1,136 @@
+classDiagram
+    %% --- CLIENTE Y PEDIDO ---
+    class Cliente {
+        +String nombre
+        +String apellido
+        +String telefono
+    }
+
+    class Pedido {
+        +Int numeroPedido
+        +Date fechaSolicitud
+        +Time horaSolicitud
+        +String domicilioEntregaCompleto
+        +Float importeTotal
+        +Float montoAbonar
+        +Float vuelto
+        +Time demoraEstimadaInformada
+        +String estado
+    }
+
+    class DetallePedido {
+        +Int cantidadAsociada
+        +Float importeProducto
+    }
+
+    %% --- PRODUCTOS Y MERCADERÍA ---
+    class TipoProducto {
+        +String nombre
+    }
+
+    class Producto {
+        +String nombre
+        +Float precio
+    }
+
+    class Mercaderia {
+        +String descripcion
+    }
+
+    class Proveedor {
+        +String nombre
+    }
+
+    %% --- ROLES (EMPLEADOS) ---
+    class Empleado {
+        +String nombre
+    }
+
+    class Telefonista {
+        +atenderConsulta()
+        +informarPrecios()
+        +tomarPedido()
+    }
+
+    class ResponsableCocina {
+        +visualizarPedidos()
+        +consultarDetalle()
+        +registrarFinalizacionElaboracion()
+    }
+
+    class ResponsableEntregas {
+        +armarPedido()
+        +generarTicket()
+        +asignarRepartidor()
+        +controlarDineroRecibido()
+        +registrarRecepcionDinero()
+        +registrarDiferencia()
+        +actualizarPedidoEntregado()
+    }
+
+    class Repartidor {
+        +Int MAX_ENTREGAS = 3
+        +Float MAX_MONTO = 20000
+        +entregarPedido()
+        +cobrar()
+        +entregarVuelto()
+        +rendirDinero()
+    }
+
+    class ResponsableCompras {
+        +definirMercaderia()
+    }
+
+    %% --- COMPONENTES DEL SISTEMA Y OPERACIONES ---
+    class Ticket {
+        +DateTime fechaHora
+        +Float montoTotal
+    }
+
+    class ImpresoraFiscal {
+        +tiempoImpresionMaxSegundos = 5
+        +imprimirTicket(Ticket)
+    }
+
+    class ControlDinero {
+        +Float dineroEntregado
+        +Float diferencia
+        +Boolean existeDiferencia
+    }
+
+    class ListadoSemanalVentas {
+        +Date semana
+        +generarListado()
+    }
+
+    class DetalleListadoVentas {
+        +Int cantidadVendidaSemana
+        +Float importeFacturacionTotal
+    }
+
+    %% --- RELACIONES ---
+    Empleado <|-- Telefonista
+    Empleado <|-- ResponsableCocina
+    Empleado <|-- ResponsableEntregas
+    Empleado <|-- Repartidor
+    Empleado <|-- ResponsableCompras
+
+    Cliente "1" -- "*" Pedido : realiza
+    Pedido "1" *-- "1..*" DetallePedido : contiene
+    DetallePedido "*" -- "1" Producto : corresponde a
+    Producto "*" -- "1" TipoProducto : agrupado en
+    
+    Pedido "*" -- "0..1" Repartidor : asignado a
+    Pedido "1" -- "1" Ticket : requiere
+    Ticket "*" -- "1" ImpresoraFiscal : impreso por
+    
+    Repartidor "1" -- "*" ControlDinero : rinde
+    ControlDinero "*" -- "1" ResponsableEntregas : analizado por
+    ControlDinero "1" -- "1..*" Pedido : corresponde a
+    
+    ResponsableCompras "1" -- "*" Mercaderia : define
+    Mercaderia "*" -- "1..*" Proveedor : adquirida a
+    Producto "*" -- "*" Mercaderia : requiere elaboracion con
+    
+    ListadoSemanalVentas "1" *-- "*" DetalleListadoVentas : compuesto por
+    DetalleListadoVentas "*" -- "1" Producto : detalla

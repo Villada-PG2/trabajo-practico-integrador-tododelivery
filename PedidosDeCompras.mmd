@@ -1,0 +1,52 @@
+%%Realizar el diagrama de clases del dominio:
+%%En una empresa se realizan pedidos de compra a los proveedores con los que trabaja, de los cuales se cuenta con la
+%%siguiente información: razón social, CUIT, condición de IVA, domicilio (calle, número, departamento, piso), localidad, teléfono
+%%y fax.
+%%Al realizar el pedido de compra para reponer el stock de artículos, se genera un número correlativo para asignar a dicho
+%%pedido; en cada pedido se puede solicitar uno o más artículos y se realiza a un solo proveedor. De cada artículo se conoce el
+%%nombre, descripción, unidad de medida y precio unitario. Al receptar el pedido del proveedor se registra la fecha de
+%%recepción de los artículos y se actualiza el stock y el precio de dichos artículos.
+classDiagram
+
+    class Proveedor {
+        - string razonSocial
+        - string cuit
+        - string condicionIva
+        - string telefono
+        - string fax
+    }
+    
+    class Domicilio {
+        - string calle
+        - int numero
+        - string departamento
+        - int piso
+        - string localidad
+    }
+
+    class PedidoCompra {
+        - int numeroCorrelativo
+        - date fechaRecepcion
+        - generarNroPedido()
+        - obtenerFechaRecepcion()
+    }
+    
+    class DetallePedido {
+        - int cantidad
+        - float precioUnitario
+    }
+    
+    class Articulo {
+        - string nombre
+        - string descripcion
+        - float unidadDeMedida
+        - float precioUnitario
+        - int stock
+        - actualizarStock()
+        - actualizarPrecio()
+    }
+
+    Proveedor "1" --> "*" PedidoCompra
+    Proveedor  o--  Domicilio
+    PedidoCompra  o-- DetallePedido
+    DetallePedido "1" --> "1" Articulo
