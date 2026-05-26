@@ -1,9 +1,9 @@
 classDiagram
-    %% --- CLIENTE Y PEDIDO ---
     class Cliente {
         +String nombre
         +String apellido
-        +String telefono
+        +Int telefono
+        +RealizarPedido()
     }
 
     class Pedido {
@@ -18,12 +18,15 @@ classDiagram
         +String estado
     }
 
+    class Envoltorio {
+        +String domicilioEscrito
+    }
+
     class DetallePedido {
         +Int cantidadAsociada
         +Float importeProducto
     }
 
-    %% --- PRODUCTOS Y MERCADERÍA ---
     class TipoProducto {
         +String nombre
     }
@@ -41,7 +44,6 @@ classDiagram
         +String nombre
     }
 
-    %% --- ROLES (EMPLEADOS) ---
     class Empleado {
         +String nombre
     }
@@ -69,19 +71,21 @@ classDiagram
     }
 
     class Repartidor {
-        +Int MAX_ENTREGAS = 3
-        +Float MAX_MONTO = 20000
         +entregarPedido()
         +cobrar()
         +entregarVuelto()
         +rendirDinero()
     }
 
+    class Reparto {
+        +Int MAX_ENTREGAS = 3
+        +Float MAX_MONTO = 20000
+    }
+
     class ResponsableCompras {
         +definirMercaderia()
     }
 
-    %% --- COMPONENTES DEL SISTEMA Y OPERACIONES ---
     class Ticket {
         +DateTime fechaHora
         +Float montoTotal
@@ -108,29 +112,32 @@ classDiagram
         +Float importeFacturacionTotal
     }
 
-    %% --- RELACIONES ---
-    Empleado <|-- Telefonista
-    Empleado <|-- ResponsableCocina
-    Empleado <|-- ResponsableEntregas
-    Empleado <|-- Repartidor
-    Empleado <|-- ResponsableCompras
+    Empleado <-- Telefonista
+    Empleado <-- ResponsableCocina
+    Empleado <-- ResponsableEntregas
+    Empleado <-- Repartidor
+    Empleado <-- ResponsableCompras
 
-    Cliente "1" -- "*" Pedido : realiza
-    Pedido "1" *-- "1..*" DetallePedido : contiene
-    DetallePedido "*" -- "1" Producto : corresponde a
-    Producto "*" -- "1" TipoProducto : agrupado en
+    Cliente "1" --> "*" Pedido
+    Pedido "1" *-- "1..*" DetallePedido
+    Pedido "1" *-- "1..*" Envoltorio
+    DetallePedido "*" --> "1" Producto
+    Producto "*" --> "1" TipoProducto
     
-    Pedido "*" -- "0..1" Repartidor : asignado a
-    Pedido "1" -- "1" Ticket : requiere
-    Ticket "*" -- "1" ImpresoraFiscal : impreso por
+    Repartidor "1" --> "*" Reparto
+    Reparto "1" o-- "1..3" Pedido
     
-    Repartidor "1" -- "*" ControlDinero : rinde
-    ControlDinero "*" -- "1" ResponsableEntregas : analizado por
-    ControlDinero "1" -- "1..*" Pedido : corresponde a
+    Pedido "1" *-- "1" Ticket
+    Ticket "*" <-- "1" ImpresoraFiscal
     
-    ResponsableCompras "1" -- "*" Mercaderia : define
-    Mercaderia "*" -- "1..*" Proveedor : adquirida a
-    Producto "*" -- "*" Mercaderia : requiere elaboracion con
-    
-    ListadoSemanalVentas "1" *-- "*" DetalleListadoVentas : compuesto por
-    DetalleListadoVentas "*" -- "1" Producto : detalla
+    Repartidor "1" --> "*" ControlDinero
+    ControlDinero "*" <-- "1" ResponsableEntregas
+    ControlDinero "1" --> "1" Reparto    
+    ResponsableCompras "1" --> "*" Mercaderia
+    Mercaderia "*" --> "1..*" Proveedor
+    Producto "*" --o "*" Mercaderia
+    Telefonista "1" --> "*" Pedido
+    ResponsableCocina "1" --> "*" Pedido
+
+    ListadoSemanalVentas "1" *--o "*" DetalleListadoVentas
+    DetalleListadoVentas "*" --> "1" Producto
