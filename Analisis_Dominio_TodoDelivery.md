@@ -67,7 +67,24 @@ similares a las de Windows.
 ## Objetivo:
 Gestionar los procesos de consulta de productos y precios, toma de pedidos telefónicos, visualización y control de elaboración en cocina, armado, asignación de repartos, rendición de dinero de los repartidores y generación de estadísticas de facturación semanal para el negocio Todo Delivery.
 
-## Límite:
+## Entradas:
+* Datos del cliente (nombre, apellido, teléfono, domicilio completo).
+* Detalles del pedido (productos seleccionados, cantidades asociadas, monto con el que abona).
+* Actualizaciones periódicas de precios de los productos.
+* Registro de finalización de elaboración de productos (desde la pantalla táctil de cocina).
+* Asignación de repartidores a los pedidos correspondientes.
+* Dinero rendido por el repartidor y datos de control de caja (registro de diferencias).
+* Definición de mercadería y bebidas necesarias informadas por el responsable de compras.
+
+## Salidas:
+* Información de productos y precios en pantalla para la telefonista.
+* Importe total calculado del pedido y monto estimado del cambio/vuelto.
+* Visualización ordenada del listado y detalle de pedidos en las pantallas táctiles de la cocina.
+* Ticket fiscal impreso a través de la impresora fiscal.
+* Listado semanal de productos vendidos (cantidades acumuladas e importe de participación en la facturación total).
+* Registro de novedades de diferencias de caja detectadas en la rendición diaria.
+
+## Frontera:
 * La preparación física y cocción de los alimentos en la cocina.
 * El traslado físico de los pedidos por parte de los repartidores hacia los domicilios de los clientes.
 * La adquisición real y negociación de mercadería y bebidas con los proveedores (el sistema solo contempla la definición de necesidades por el responsable de compras).
@@ -117,20 +134,3 @@ Gestionar los procesos de consulta de productos y precios, toma de pedidos telef
 * **Hardware de Salida:** Interfaz e integración obligatoria con una impresora fiscal para la emisión de los tickets de cobro.
 * **Eficiencia de Tiempo:** La generación e impresión del ticket fiscal debe completarse en un tiempo estricto nunca superior a los 5 segundos.
 * **Interfaz de Usuario (Look & Feel):** El sistema debe contar con interfaces gráficas y pantallas con un diseño similar al entorno de Windows.
-
-## Entradas:
-* Datos del cliente (nombre, apellido, teléfono, domicilio completo).
-* Detalles del pedido (productos seleccionados, cantidades asociadas, monto con el que abona).
-* Actualizaciones periódicas de precios de los productos.
-* Registro de finalización de elaboración de productos (desde la pantalla táctil de cocina).
-* Asignación de repartidores a los pedidos correspondientes.
-* Dinero rendido por el repartidor y datos de control de caja (registro de diferencias).
-* Definición de mercadería y bebidas necesarias informadas por el responsable de compras.
-
-## Salidas:
-* Información de productos y precios en pantalla para la telefonista.
-* Importe total calculado del pedido y monto estimado del cambio/vuelto.
-* Visualización ordenada del listado y detalle de pedidos en las pantallas táctiles de la cocina.
-* Ticket fiscal impreso a través de la impresora fiscal.
-* Listado semanal de productos vendidos (cantidades acumuladas e importe de participación en la facturación total).
-* Registro de novedades de diferencias de caja detectadas en la rendición diaria.
