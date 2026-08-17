@@ -1,0 +1,143 @@
+classDiagram
+    class Cliente {
+        +String nombre
+        +String apellido
+        +Int telefono
+        +RealizarPedido()
+    }
+
+    class Pedido {
+        +Int numeroPedido
+        +Date fechaSolicitud
+        +Time horaSolicitud
+        +String domicilioEntregaCompleto
+        +Float importeTotal
+        +Float montoAbonar
+        +Float vuelto
+        +Time demoraEstimadaInformada
+        +String estado
+    }
+
+    class Envoltorio {
+        +String domicilioEscrito
+    }
+
+    class DetallePedido {
+        +Int cantidadAsociada
+        +Float importeProducto
+    }
+
+    class TipoProducto {
+        +String nombre
+    }
+
+    class Producto {
+        +String nombre
+        +Float precio
+    }
+
+    class Mercaderia {
+        +String descripcion
+    }
+
+    class Proveedor {
+        +String nombre
+    }
+
+    class Empleado {
+        +String nombre
+    }
+
+    class Telefonista {
+        +atenderConsulta()
+        +informarPrecios()
+        +tomarPedido()
+    }
+
+    class ResponsableCocina {
+        +visualizarPedidos()
+        +consultarDetalle()
+        +registrarFinalizacionElaboracion()
+    }
+
+    class ResponsableEntregas {
+        +armarPedido()
+        +generarTicket()
+        +asignarRepartidor()
+        +controlarDineroRecibido()
+        +registrarRecepcionDinero()
+        +registrarDiferencia()
+        +actualizarPedidoEntregado()
+    }
+
+    class Repartidor {
+        +entregarPedido()
+        +cobrar()
+        +entregarVuelto()
+        +rendirDinero()
+    }
+
+    class Reparto {
+        +Int MAX_ENTREGAS = 3
+        +Float MAX_MONTO = 20000
+    }
+
+    class ResponsableCompras {
+        +definirMercaderia()
+    }
+
+    class Ticket {
+        +DateTime fechaHora
+        +Float montoTotal
+    }
+
+    class ImpresoraFiscal {
+        +tiempoImpresionMaxSegundos = 5
+        +imprimirTicket(Ticket)
+    }
+
+    class ControlDinero {
+        +Float dineroEntregado
+        +Float diferencia
+        +Boolean existeDiferencia
+    }
+
+    class ListadoSemanalVentas {
+        +Date semana
+        +generarListado()
+    }
+
+    class DetalleListadoVentas {
+        +Int cantidadVendidaSemana
+        +Float importeFacturacionTotal
+    }
+
+    Empleado <-- Telefonista
+    Empleado <-- ResponsableCocina
+    Empleado <-- ResponsableEntregas
+    Empleado <-- Repartidor
+    Empleado <-- ResponsableCompras
+
+    Cliente "1" --> "*" Pedido
+    Pedido "1" *-- "1..*" DetallePedido
+    Pedido "1" *-- "1..*" Envoltorio
+    DetallePedido "*" --> "1" Producto
+    Producto "*" --> "1" TipoProducto
+    
+    Repartidor "1" --> "*" Reparto
+    Reparto "1" o-- "1..3" Pedido
+    
+    Pedido "1" *-- "1" Ticket
+    Ticket "*" <-- "1" ImpresoraFiscal
+    
+    Repartidor "1" --> "*" ControlDinero
+    ControlDinero "*" <-- "1" ResponsableEntregas
+    ControlDinero "1" --> "1" Reparto    
+    ResponsableCompras "1" --> "*" Mercaderia
+    Mercaderia "*" --> "1..*" Proveedor
+    Producto "*" --o "*" Mercaderia
+    Telefonista "1" --> "*" Pedido
+    ResponsableCocina "1" --> "*" Pedido
+
+    ListadoSemanalVentas "1" *--o "*" DetalleListadoVentas
+    DetalleListadoVentas "*" --> "1" Producto
