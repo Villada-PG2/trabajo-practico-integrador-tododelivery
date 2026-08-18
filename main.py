@@ -9,9 +9,7 @@ from modelos import (
 )
 
 def main():
-    print("="*60)
-    print("      SISTEMA TODO DELIVERY - PRUEBA DE MODELOS Y FLUJO      ")
-    print("="*60)
+    print("SISTEMA TODO DELIVERY")
 
     telefonista = Telefonista(nombre="María Gonzalez")
     repartidor = Repartidor(nombre="Andrés López")
@@ -44,7 +42,7 @@ def main():
 
     cliente_santiago = Cliente(nombre="Santiago", apellido="Ayerra", telefono=3511234567) 
 
-    print("\n--- CASO 1: Creación de Pedido Válido ---")
+    print("\nCASO 1: Creación de Pedido Válido")
     try:
         detalle1 = DetallePedido(cantidadAsociada=2, importeProducto=17000.0, producto=prod_pizza)
         detalle2 = DetallePedido(cantidadAsociada=1, importeProducto=1500.0, producto=prod_coca)
@@ -54,7 +52,7 @@ def main():
             numeroPedido=101,
             fechaSolicitud=date.today(),
             horaSolicitud=time(20, 30),
-            domicilioEntregaCompleto="Av. Velez Sarsfield 1500, B° Sur",
+            domicilioEntregaCompleto="Av. Velez Sarsfield 1500",
             importeTotal=18500.0,
             montoAbonar=20000.0,
             vuelto=1500.0,
@@ -70,7 +68,7 @@ def main():
         print("Error al crear el pedido válido:")
         print(e)
 
-    print("\n--- CASO 2: Error matemático en el cobro (Validación Cruzada) ---")
+    print("\nCASO 2: Validación Cruzada")
     try:
         pedido_invalido = Pedido(
             numeroPedido=102,
@@ -91,7 +89,7 @@ def main():
         for error in e.errors():
             print(f"  -> {error['msg']}")
 
-    print("\n--- CASO 3: Violación de regla de dominio (Reparto excede monto máximo) ---")
+    print("\nCASO 3: Reparto excede monto máximo")
     try:
         pedido_grande = Pedido(
             numeroPedido=103,
@@ -113,7 +111,7 @@ def main():
         for error in e.errors():
             print(f"  -> {error['msg']}")
 
-    print("\n--- CASO 4: Rendición de cuentas con inconsistencias lógicas ---")
+    print("\nCASO 4: Inconsistencias lógicas")
     try:
         reparto_valido = Reparto(pedidos=[pedido_grande])
         control = ControlDinero(
@@ -129,41 +127,35 @@ def main():
             print(f"  -> {error['msg']}")
 
 
-    # PRUEBA DEL FLUJO DE TRABAJO (MÉTODOS)
+    # PRUEBA DE METODOS
 
-    print("--- CASO 5: SIMULACIÓN DE FLUJO DE TRABAJO COMPLETO ---")
+    print("\nCASO 5: Prueba de Metodos")
 
-    # 3.1. Interacción Cliente - Telefonista
     cliente_santiago.RealizarPedido()
     telefonista.atenderConsulta()
     telefonista.informarPrecios()
     telefonista.tomarPedido(pedido_valido)
 
-    # 3.2. Proceso en Cocina
-    print("\n[INFO] El pedido pasa a cocina...")
+    print("\nEl pedido pasa a cocina...")
     responsable_cocina.visualizarPedidos([pedido_valido])
     responsable_cocina.consultarDetalle(pedido_valido)
     responsable_cocina.registrarFinalizacionElaboracion(pedido_valido)
     
-    # 3.3. Armado y Ticket (Responsable de Entregas)
-    print("\n[INFO] El pedido pasa al área de entregas...")
+    print("\nEl pedido pasa al área de entregas...")
     responsable_entregas.armarPedido(pedido_valido)
     nuevo_ticket = responsable_entregas.generarTicket(pedido_valido)
     impresora.imprimirTicket(nuevo_ticket)
     responsable_entregas.asignarRepartidor(pedido_valido, repartidor.nombre)
 
-    # 3.4. Distribución (Repartidor)
-    print("\n[INFO] El repartidor sale a la calle...")
+    print("\nEl repartidor sale a la calle...")
     repartidor.entregarPedido(pedido_valido)
     dinero_recibido_cliente = repartidor.cobrar(pedido_valido)
     vuelto_entregado = repartidor.entregarVuelto(pedido_valido)
     print(f"Cobrado al cliente: ${dinero_recibido_cliente} | Vuelto entregado: ${vuelto_entregado}")
     responsable_entregas.actualizarPedidoEntregado(pedido_valido)
 
-    # 3.5. Rendición de Caja
-    print("\n[INFO] El repartidor regresa y rinde el dinero...")
-    dinero_rendido = repartidor.rendirDinero(dinero_recibido_cliente) # Simula que trae el billete con el que abonó el cliente
-    # El monto esperado en caja es el Importe Total (el resto fue vuelto)
+    print("\nEl repartidor regresa y rinde el dinero...")
+    dinero_rendido = repartidor.rendirDinero(dinero_recibido_cliente)
     diferencia = responsable_entregas.controlarDineroRecibido(montoEsperado=pedido_valido.importeTotal, montoRecibido=(dinero_rendido - vuelto_entregado))
     
     if diferencia == 0:
@@ -173,11 +165,7 @@ def main():
 
     print(f"\n[ESTADO FINAL] El pedido N°{pedido_valido.numeroPedido} finalizó con estado: '{pedido_valido.estado}'.")
 
-    #PRUEBA DE REPORTES
-
-    print("\n" + "="*60)
-    print("--- CASO 6: GENERACIÓN DE REPORTES ---")
-    print("="*60)
+    print("CASO 6: Generacion de Listados")
     
     det_venta_pizza = DetalleListadoVentas(
         cantidadVendidaSemana=45, 
