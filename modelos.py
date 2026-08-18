@@ -205,7 +205,6 @@ class ListadoSemanalVentas(BaseModel):
     detalles: List[DetalleListadoVentas] = Field(..., min_length=1, description="Detalle del listado")
 
     def generarListado(self):
-        print(f"################ LISTADO SEMANAL DE VENTAS ({self.semana}) ###################")
+        print(f"LISTADO SEMANAL DE VENTAS ({self.semana})")
         for detalle in self.detalles:
             print(f"Producto: {detalle.producto.nombre} | Vendidos: {detalle.cantidadVendidaSemana} | Recaudado: ${detalle.importeFacturacionTotal}")
-        print("##############################################################################")
